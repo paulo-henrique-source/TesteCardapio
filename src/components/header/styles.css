@@ -1,0 +1,13 @@
+header {
+    text-align: center;
+    padding: 24px 8px;
+    /* border-bottom: 2px solid var(--lines); */
+    /* background-color: var(--secondary-color); */
+}
+
+.Restaurante {
+    color: black;
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 32px;
+}
