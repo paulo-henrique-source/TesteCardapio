@@ -12,7 +12,7 @@ function Home() {
           </header>
 
 
-          <div>
+          <div className = "master_content">
             <Content />
           </div>
 
@@ -21,4 +21,3 @@ function Home() {
   }
   
   export default Home;
-  

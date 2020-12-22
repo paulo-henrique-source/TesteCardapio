@@ -4,7 +4,15 @@ import Swal from 'sweetalert2'
 import './styles.css';
 
 function Content() {
-
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js').then((registration) => {
+                console.log('SW registered: ', registration);
+            }).catch((registrationError) => {
+                console.log('SW registration failed: ', registrationError);
+            });
+        });
+    }
 
     const [totalPrice, setTotalPrice] = useState(0);
     const [lunchName, setLunchName] = useState("");
@@ -567,9 +575,13 @@ function Content() {
                     })
                 }}>
                     <div className="info">
-                        <div id="nameId" className="name">Marmita Moda da Casa</div>
-                        <div className="desc">Arroz, Feijão, Massa do dia, refogado, fritas, farofa, 2 carnes a escolha e salada.</div>
-                        <div className="price">A partir de R$ 13,00</div>
+                        <div className="info_sup">
+                            <div id="nameId" className="name">Marmita Moda da Casa</div>
+                            <div className="desc">Arroz, Feijão, Massa do dia, refogado, fritas, farofa, 2 carnes a escolha e salada.</div>
+                        </div>
+                        <div className="info_inf">
+                            <fotter className="price">A partir de R$ 13,00</fotter>
+                        </div>
                     </div>
                     <div className="image">
                         <img src="https://images.unsplash.com/photo-1600015835779-c6b36ddeac1f?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=675&q=80"></img>
@@ -891,9 +903,13 @@ function Content() {
                     })
                 }}>
                     <div className="info">
-                        <div id="nameId" className="name">Marmita Econômica</div>
-                        <div className="desc">Arroz, Feijão, refogado, ovo, fritas, farofa, 1 carne a escolha e salada.</div>
-                        <div className="price">A partir de R$ 11,00</div>
+                        <div className="info_sup">
+                            <div id="nameId" className="name">Marmita Econômica</div>
+                            <div className="desc">Arroz, Feijão, refogado, ovo, fritas, farofa, 1 carne a escolha e salada.</div>
+                        </div>
+                        <div className="info_inf">
+                            <fotter className="price">A partir de R$ 11,00</fotter>
+                        </div>
                     </div>
                     <div className="image">
                         <img src="https://images.unsplash.com/photo-1572269875715-391a71e6d188?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1296&q=80"></img>
@@ -1093,9 +1109,13 @@ function Content() {
                     })
                 }}>
                     <div className="info">
-                        <div className="name">Marmita Chinesa</div>
-                        <div className="desc">Arroz Chop Suey, Porquinho alho e óleo, Frango Xadrez e Salada Chinesa (repolho).</div>
-                        <div className="price">A partir de R$ 13,00</div>
+                        <div className="info_sup">
+                            <div className="name">Marmita Chinesa</div>
+                            <div className="desc">Arroz Chop Suey, Porquinho alho e óleo, Frango Xadrez e Salada Chinesa (repolho).</div>
+                        </div>
+                        <div className="info_inf">
+                            <fotter className="price">A partir de R$ 13,00</fotter>
+                        </div>
                     </div>
                     <div className="image">
                         <img src="https://images.unsplash.com/photo-1512398975429-6ec18e1f3eb4?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=634&q=80"></img>
@@ -1296,9 +1316,13 @@ function Content() {
                     })
                 }}>
                     <div className="info">
-                        <div className="name">Marmita Light</div>
-                        <div className="desc">Arroz Integral, Feijão, Legumes, Filé de Frango Grelhado e Salada.</div>
-                        <div id="light" className="price">A partir de R$ 11,00</div>
+                        <div className="info_sup">
+                            <div className="name">Marmita Light</div>
+                            <div className="desc">Arroz Integral, Feijão, Legumes, Filé de Frango Grelhado e Salada.</div>
+                        </div>
+                        <div className="info_inf">
+                            <fotter className="price">A partir de R$ 11,00</fotter>
+                        </div>
                     </div>
                     <div className="image">
                         <img src="https://images.unsplash.com/photo-1599354607469-a5599a12e3b3?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1347&q=80"></img>
@@ -1506,9 +1530,13 @@ function Content() {
                     })
                 }}>
                     <div className="info">
-                        <div className="name"><p>Feijoada</p></div>
-                        <div className="desc">Arroz, feijoada, farofa, couve, bisteca suína, torresmo, vinagrete e laranja.</div>
-                        <div className="price">A partir de R$ 13,00</div>
+                        <div className="info_sup">
+                            <div className="name"><p>Feijoada</p></div>
+                            <div className="desc">Arroz, feijoada, farofa, couve, bisteca suína, torresmo, vinagrete e laranja.</div>
+                        </div>
+                        <div className="info_inf">
+                            <fotter className="price">A partir de R$ 13,00</fotter>
+                        </div>
                     </div>
                     <div className="image">
                         <img src="https://img.itdg.com.br/images/recipes/000/002/998/324387/324387_original.jpg"></img>
@@ -1557,16 +1585,16 @@ function Content() {
                     }).then((result) => {
                         if (result.isConfirmed) {
                         } else if (
-                          setDados([]),
-                          setTotalPrice(0),
-                          setItens([0])
+                            setDados([]),
+                            setTotalPrice(0),
+                            setItens([0])
                         ) {
                             Swal.fire.fire(
-                            'Carrinho Limpo',
-                            'success'
-                          )
+                                'Carrinho Limpo',
+                                'success'
+                            )
                         }
-                      })
+                    })
                 }
 
             }}>

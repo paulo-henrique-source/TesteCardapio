@@ -6,7 +6,7 @@ export default function MainRoutes() {
     return (
         <BrowserRouter>
             <Switch>
-               <Route path="/home" component={Home}/>
+               <Route path="/" component={Home}/>
             </Switch>
         </BrowserRouter>
     )

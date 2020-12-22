@@ -7,7 +7,7 @@
 }
 
 .Content {
-    margin: 0 96px;
+    margin: 0 auto;
     position: relative;
 }
 
@@ -17,6 +17,7 @@
     line-height: 40px;
     border-bottom: 2px solid rgba(0, 0, 0, 0.5);
     margin: 32px 0 8px;
+    width: 100%;
 }
 
 .card_container {
@@ -40,6 +41,9 @@
 
 .info {
     margin: 4px 12px 0;
+    display: grid;
+    grid-template-rows: 2fr 1fr;
+    position: relative;
 }
 
 .container:hover {
@@ -67,21 +71,18 @@
     line-height: 24px;
     font-weight: 300;
     color: rgba(0, 0, 0, 0.9);
-    margin: 12px auto 4px;
-}
-
-/* 
-#light {
-    text-align: center;
-    font-size: 14px;
-    line-height: 24px;
-    font-weight: 300;
-    color: rgba(0,0,0,0.9);
-    margin: 12px 10px 4px;
+    margin: 12px auto 4px auto;
+    display: flex;
+    justify-content: center;
     position: absolute;
     bottom: 0;
-    
-} */
+}
+
+.info_inf {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
 
 .fotter {
     margin: 0 auto;
@@ -172,6 +173,7 @@ input {
     border-radius: 8px;
     padding-top: 2px;
     background-color: var(--background-color);
+    max-height: 24px;
 }
 
 .select_container {
@@ -227,6 +229,7 @@ input[type='radio']:checked:after {
 
 .c_info {
     margin: 2px 0;
+    
 }
 
 #modal_title h5 {
@@ -304,4 +307,184 @@ input[type='checkbox'] {
 
 .swal2-styled.swal2-cancel {
     background-color: #dc3545;
+}
+
+img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: fill;
+}
+
+@media(max-width:1350px) {
+
+    .card_container {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 24px;
+    }
+}
+
+@media(max-width:980px) {
+
+    .card_container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+    }
+    .fotter div {
+        background-color: var(--secondary-color);
+        text-align: center;
+        border-radius: 8px 8px 0 0;
+        color: white;
+        font-family: 'Nunito Sans', sans-serif;
+        margin: 0 auto;
+        padding: 8px;
+    }
+}
+
+@media(max-width:720px) {
+
+    .card_container {
+        display: block;
+        gap: 24px;
+    }
+    .fotter div {
+        display: block;
+        background-color: var(--secondary-color);
+        text-align: center;
+        border-radius: 8px 8px 0 0;
+        color: white;
+        font-family: 'Nunito Sans', sans-serif;
+        margin: 0 auto;
+        padding: 8px;
+    }
+    .fotter div h5 {
+        font-size: 16px;
+        line-height: 26px;
+        font-weight: bold;
+        margin: 0 auto !important;
+        text-align: center !important;
+    }
+    .fotter p {
+        display: none;
+    }
+}
+
+
+@media(max-width:570px) {
+
+    .card_container {
+        display: block;
+        gap: 24px;
+    }
+    .fotter div {
+        background-color: var(--secondary-color);
+        text-align: center;
+        border-radius: 8px 8px 0 0;
+        color: white;
+        font-family: 'Nunito Sans', sans-serif;
+        margin: 0 auto;
+        padding: 8px;
+    }
+    .fotter div h5 {
+        font-size: 16px;
+        line-height: 26px;
+        font-weight: bold;
+        margin: 0 auto !important;
+        text-align: center !important;
+    }
+    .fotter p {
+        display: none;
+    }
+    .title {
+        font-size: 20px;
+        line-height: 30px;
+        
+    }
+}
+
+
+@media(max-width:470px) {
+
+    .card_container {
+        display: block;
+        gap: 24px;
+    }
+    .image {
+        display: none;
+    }
+    .container {
+        display: block;
+    }
+    .fotter div {
+        display: block;
+        background-color: var(--secondary-color);
+        text-align: center;
+        border-radius: 8px 8px 0 0;
+        color: white;
+        font-family: 'Nunito Sans', sans-serif;
+        margin: 0 auto;
+        padding: 8px;
+    }
+    .fotter div h5 {
+        font-size: 16px;
+        line-height: 26px;
+        font-weight: bold;
+        margin: 0 auto !important;
+        text-align: center !important;
+    }
+    .fotter p {
+        display: none;
+    }
+
+    .title {
+        font-size: 20px;
+        line-height: 30px;
+        
+    }
+}
+
+
+@media(max-width:300px) {
+
+    .master_content{
+        margin: 0 16px;
+    }
+
+    .card_container {
+        display: block;
+        gap: 24px;
+    }
+    .image {
+        display: none;
+    }
+    .container {
+        display: block;
+    }
+    .fotter div {
+        display: block;
+        background-color: var(--secondary-color);
+        text-align: center;
+        border-radius: 8px 8px 0 0;
+        color: white;
+        font-family: 'Nunito Sans', sans-serif;
+        margin: 0 auto;
+        padding: 8px;
+    }
+    .fotter div h5 {
+        font-size: 16px;
+        line-height: 26px;
+        font-weight: bold;
+        margin: 0 auto !important;
+        text-align: center !important;
+    }
+    .fotter p {
+        display: none;
+    }
+
+    .title {
+        font-size: 20px;
+        line-height: 30px;
+        
+    }
 }
