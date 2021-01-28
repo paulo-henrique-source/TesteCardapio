@@ -1,0 +1,197 @@
+#header {
+    background-color: var(--secondary-color);
+}
+
+#container_cadastro {
+    background: rgb(255, 255, 255);
+    height: 80vh;
+    position: relative;
+    width: 800px;
+    height: 800px;
+    margin: 24px auto;
+    /* border: 2px solid var(--lines); */
+    border-radius: 8px;
+    box-shadow: 1px 1px 10px gray;
+}
+
+.elemento {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    text-align: center;
+}
+
+.elemento_title {
+    color: var(--secondary-color);
+    text-align: left;
+    margin: 8px 64px 0;
+}
+
+.elemento_title  h4{
+    padding: 0;
+    margin: 0;
+    font-weight: bold;
+}
+
+.elemento_title hr {
+    border-top: 1px solid gray;
+    margin: 8px 0;
+}
+
+.elemento_container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    row-gap: 24px;
+    column-gap: 12px;
+}
+
+.inp {
+    position: relative;
+    margin: auto;
+    width: 100%;
+    max-width: 280px;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.inp .label {
+    position: absolute;
+    top: 20px;
+    left: 12px;
+    font-size: 16px;
+    color: black;
+    font-weight: 500;
+    transform-origin: 0 0;
+    transform: translate3d(0, 0, 0);
+    transition: all 0.2s ease;
+    pointer-events: none;
+}
+
+.inp .focus-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.05);
+    z-index: -1;
+    transform: scaleX(0);
+    transform-origin: left;
+}
+
+.inp input {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 100%;
+    border: 0;
+    font-family: inherit;
+    padding: 16px 12px 0 12px;
+    height: 56px;
+    font-size: 16px;
+    font-weight: 400;
+    background: rgba(0, 0, 0, 0.02);
+    box-shadow: inset 0 -1px 0 gray;
+    color: gray;
+    transition: all 0.15s ease;
+}
+
+.inp input:hover {
+    background: rgba(0, 0, 0, 0.04);
+    box-shadow: inset 0 -1px 0 var(--secondary-color);
+}
+
+.inp input:not(:-moz-placeholder-shown)+.label {
+    color: rgba(0, 0, 0, 0.5);
+    transform: translate3d(0, -12px, 0) scale(0.75);
+}
+
+.inp input:not(:-ms-input-placeholder)+.label {
+    color: rgba(0, 0, 0, 0.5);
+    transform: translate3d(0, -12px, 0) scale(0.75);
+}
+
+.inp input:not(:placeholder-shown)+.label {
+    color: black;
+    transform: translate3d(0, -12px, 0) scale(0.75);
+}
+
+.inp input:focus {
+    background: rgba(0, 0, 0, 0.05);
+    outline: none;
+    box-shadow: inset 0 -2px 0 var(--secondary-color);
+}
+
+.inp input:focus+.label {
+    color: var(--secondary-color);
+    transform: translate3d(0, -12px, 0) scale(0.75);
+}
+
+.inp input:focus+.label+.focus-bg {
+    transform: scaleX(1);
+    transition: all 0.1s ease;
+}
+
+/* .body_cadastro {
+    background-image: url("iconDefault.png");
+    background-position: center;
+    background-origin: content-box;
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 100vh;
+    font-family: "Noto Sans", sans-serif;
+} */
+
+.body_cadastro{
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    background-position: center;
+    background-origin: content-box;
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 100vh;
+}
+
+.body_cadastro:after{
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background: url("iconDefault.png") no-repeat center;
+    background-size: cover;
+    filter: blur(50px);
+    z-index: -1;
+}
+
+.b_submit {
+    font-weight: bold !important;
+    background-color: var(--secondary-color) !important;
+    border-color: var(--secondary-color) !important;
+    width: 184px;
+    margin-top: 32px;
+}
+
+.b_submit:hover {
+    background-color: var(--secondary-color-hover) !important;
+    transition: 200ms;
+}
+
+#last_page {
+    text-align: left;
+    margin: 8px 16px 0;
+    position: absolute;
+}
+
+#b_lp {
+    color: var(--secondary-color)
+}
+
+#b_lp:hover {
+    color: var(--secondary-color-hover);
+    transition: 200ms;
+}

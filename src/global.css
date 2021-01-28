@@ -1,10 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;700&display=swap');
-
 :root {
     --primary-color: #EDEDED;
-    --secondary-color: #e25d0ff5;
+    --secondary-color: #f16d21;
+    --secondary-color-hover: #e65d0e;
     --lines: #83817f;
+    --background-color: rgba(237, 237, 237, 0.9);
+    --gray: #bebebe;
 }
 
 * {
@@ -15,9 +17,12 @@
 
 body {
     font-family: 'Nunito Sans', sans-serif;
-
 }
 
-header { 
+header {
     font-family: 'Roboto', sans-serif;
+}
+
+.hyper {
+    display: none;
 }

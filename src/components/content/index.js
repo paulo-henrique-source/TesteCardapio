@@ -1,155 +1,174 @@
-import React, { useEffect, useState, } from 'react';
+import React, { useEffect, useState } from 'react'
 import $ from 'jquery'
 import Swal from 'sweetalert2'
-import './styles.css';
+import './styles.css'
 
 function Content() {
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/sw.js').then((registration) => {
-                console.log('SW registered: ', registration);
-            }).catch((registrationError) => {
-                console.log('SW registration failed: ', registrationError);
-            });
-        });
-    }
+  const [totalPrice, setTotalPrice] = useState(0)
+  const [lunchName, setLunchName] = useState('')
+  const [lunchSize, setLunchSize] = useState('')
+  const [lunchMeet_One, setLunchMeet_One] = useState('')
+  const [lunchMeet_Two, setLunchMeet_Two] = useState('')
+  const [lunchAdd, setLunchAdd] = useState([])
+  const [lunchPrice, setLunchPrice] = useState(0)
+  const [itens, setItens] = useState([0])
 
-    const [totalPrice, setTotalPrice] = useState(0);
-    const [lunchName, setLunchName] = useState("");
-    const [lunchSize, setLunchSize] = useState("");
-    const [lunchMeet_One, setLunchMeet_One] = useState("");
-    const [lunchMeet_Two, setLunchMeet_Two] = useState("");
-    const [lunchAdd, setLunchAdd] = useState([]);
-    const [lunchPrice, setLunchPrice] = useState(0);
-    const [itens, setItens] = useState([0]);
+  const [data, setData] = useState({
+    size_price: 0,
+    first_meet: '',
+    second_meet: '',
+    add: 0,
+    observation: '',
+  })
 
+  const [dados, setDados] = useState([])
 
-    const [data, setData] = useState({
-        size_price: 0,
-        first_meet: "",
-        second_meet: "",
-        add: 0,
-        observation: "",
-    });
+  var house = []
+  var eco = []
+  var chinese = []
+  var light = []
+  var beens = []
 
-    const [dados, setDados] = useState([])
+  var new_Total = []
+  var adicionais = []
+  var lunchPrice_One = []
 
-    var house = []
-    var eco = []
-    var chinese = []
-    var light = []
-    var beens = []
+  var gg
 
-    var new_Total = []
-    var adicionais = []
-    var lunchPrice_One = []
+  var order
 
-    var gg;
+  function clearDados() {
+    setDados([])
+  }
 
-    var order;
-    function _mountOrder(data) {
-        order = '';
+  function clearPrice() {
+    setTotalPrice(0)
+  }
 
-        if (data == undefined || data.length == 0 || data.length == undefined || data == "") {
-            order = "vazio";
-        } else {
-            var i;
-            for (i in data) {
-                if (data[i].meat_two && data[i].meat_one !== "") {
-                    order += '<hr />' +
-                        '<div class="select_container">' +
-                        '<div id="c_desc">' +
-                        '<li>' +
-                        data[i].title +
-                        '<li class="inside"> ' + data[i].size + '</li>' +
-                        '<li id="inside-m1"class="inside"> ' + data[i].meat_one + '</li>' +
-                        '<li id="inside-m2" class="inside"> ' + data[i].meat_two + '</li>' +
-                        '<li id="inside-add" class="inside"> ' + data[i].add + '</li>' +
-                        '<li class="inside-none"></li>' +
-                        '</li>' +
-                        '</div>' +
-                        '<div id="c_price">R$' + data[i].price +
-                        '</div>' +
-                        '</div>'
-                }
+  function clearItens() {
+    setItens([0])
+  }
 
-                if (data[i].meat_one == "") {
-                    order += '<hr />' +
-                        '<div class="select_container">' +
-                        '<div id="c_desc">' +
-                        '<li>' +
-                        data[i].title +
-                        '<li class="inside"> ' + data[i].size + '</li>' +
-                        '<li id="inside-add" class="inside"> ' + data[i].add + '</li>' +
-                        '<li class="inside-none"></li>' +
-                        '</li>' +
-                        '</div>' +
-                        '<div id="c_price">R$' + data[i].price +
-                        '</div>' +
-                        '</div>'
-                }
+  function _mountOrder(data) {
+    order = ''
 
-                if (data[i].meat_two == "" && data[i].meat_one !== "") {
-                    order += '<hr />' +
-                        '<div class="select_container">' +
-                        '<div id="c_desc">' +
-                        '<li>' +
-                        data[i].title +
-                        '<li class="inside"> ' + data[i].size + '</li>' +
-                        '<li id="inside-m1"class="inside"> ' + data[i].meat_one + '</li>' +
-                        '<li id="inside-add" class="inside"> ' + data[i].add + '</li>' +
-                        '<li class="inside-none"></li>' +
-                        '</li>' +
-                        '</div>' +
-                        '<div id="c_price">R$' + data[i].price +
-                        '</div>' +
-                        '</div>'
-                }
-            }
+    if (
+      data == undefined ||
+      data.length == 0 ||
+      data.length == undefined ||
+      data == ''
+    ) {
+      order = 'vazio'
+    } else {
+      var i
+      for (i in data) {
+        if (data[i].meat_two && data[i].meat_one !== '') {
+          order +=
+            '<hr />' +
+            '<div class="select_container">' +
+            '<div id="c_desc">' +
+            '<li>' +
+            data[i].title +
+            '<li class="inside"> ' +
+            data[i].size +
+            '</li>' +
+            '<li id="inside-m1"class="inside"> ' +
+            data[i].meat_one +
+            '</li>' +
+            '<li id="inside-m2" class="inside"> ' +
+            data[i].meat_two +
+            '</li>' +
+            '<li id="inside-add" class="inside"> ' +
+            data[i].add +
+            '</li>' +
+            '<li class="inside-none"></li>' +
+            '</li>' +
+            '</div>' +
+            '<div id="c_price">R$' +
+            data[i].price +
+            '</div>' +
+            '</div>'
         }
 
-    }
-
-    useEffect(() => {
-
-        _mountOrder(dados)
-
-        if (totalPrice !== 0) {
-
-            var previus = $('#aloha').html().replace("R$ ", "")
-
-            new_Total.push(parseFloat(previus))
-
+        if (data[i].meat_one == '') {
+          order +=
+            '<hr />' +
+            '<div class="select_container">' +
+            '<div id="c_desc">' +
+            '<li>' +
+            data[i].title +
+            '<li class="inside"> ' +
+            data[i].size +
+            '</li>' +
+            '<li id="inside-add" class="inside"> ' +
+            data[i].add +
+            '</li>' +
+            '<li class="inside-none"></li>' +
+            '</li>' +
+            '</div>' +
+            '<div id="c_price">R$' +
+            data[i].price +
+            '</div>' +
+            '</div>'
         }
 
-
-    })
-
-
-    function myFunc(total, num) {
-        return total + num;
+        if (data[i].meat_two == '' && data[i].meat_one !== '') {
+          order +=
+            '<hr />' +
+            '<div class="select_container">' +
+            '<div id="c_desc">' +
+            '<li>' +
+            data[i].title +
+            '<li class="inside"> ' +
+            data[i].size +
+            '</li>' +
+            '<li id="inside-m1"class="inside"> ' +
+            data[i].meat_one +
+            '</li>' +
+            '<li id="inside-add" class="inside"> ' +
+            data[i].add +
+            '</li>' +
+            '<li class="inside-none"></li>' +
+            '</li>' +
+            '</div>' +
+            '<div id="c_price">R$' +
+            data[i].price +
+            '</div>' +
+            '</div>'
+        }
+      }
     }
+  }
 
+  useEffect(() => {
+    _mountOrder(dados)
+    console.log(dados)
 
+    if (totalPrice !== 0) {
+      var previus = $('#aloha').html().replace('R$ ', '')
 
+      new_Total.push(parseFloat(previus))
+    }
+  })
 
-    return (
-        <div className="Content">
+  function myFunc(total, num) {
+    return total + num
+  }
 
-            <div className="title">
-                Marmitas
-            </div>
+  return (
+    <div className="Content">
+      <div className="title">Marmitas</div>
 
-            <section className="card_container">
+      <section className="card_container">
+        <div
+          className="container"
+          onClick={(e) => {
+            e.preventDefault()
 
-                <div className="container" onClick={(e) => {
-                    e.preventDefault()
-
-
-                    Swal.fire({
-                        title: '<div id="modal_title"><h4>Detalhes</h4> <h5 id="lunch"> Marmita Moda da Casa </h5> </div>',
-                        html:
-                            `
+            Swal.fire({
+              title:
+                '<div id="modal_title"><h4>Detalhes</h4> <h5 id="lunch"> Marmita Moda da Casa </h5> </div>',
+              html: `
                         
                         
                         <section class="Swal-Container">
@@ -505,99 +524,111 @@ function Content() {
                             </div>
                             <hr></hr>
                             `,
-                        allowOutsideClick: true,
-                        showCloseButton: true,
-                        confirmButtonText: `Adicionar ao Carrinho`,
+              allowOutsideClick: true,
+              showCloseButton: true,
+              confirmButtonText: `Adicionar ao Carrinho`,
 
-                        preConfirm: () => {
-                            if ($('input[name="size"]:checked').val() == undefined || $('input[name="option-one"]:checked').val() == undefined || $('input[name="option-two"]:checked').val() == undefined) {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Oops...',
-                                    html: `<h5 id="error_msg"> Por Favor selecione todos os campos OBRIGATÓRIOS. </h5>`,
-                                })
-                                return false;
-                            }
+              preConfirm: () => {
+                if (
+                  $('input[name="size"]:checked').val() == undefined ||
+                  $('input[name="option-one"]:checked').val() == undefined ||
+                  $('input[name="option-two"]:checked').val() == undefined
+                ) {
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    html: `<h5 id="error_msg"> Por Favor selecione todos os campos OBRIGATÓRIOS. </h5>`,
+                  })
+                  return false
+                }
 
-                            adicionais = ["Sem Adicional"]
-                            setLunchAdd(adicionais)
-                            $("input:checkbox[name=add]:checked").each(function () {
-                                var chacked = parseFloat($(this).val())
-                                house.push(chacked)
-                                const index = adicionais.indexOf("Sem Adicional");
-                                if (index > -1) {
-                                    adicionais.splice(index, 1);
-                                }
-                                adicionais.push($(this)[0].attributes[0].textContent)
-                                setLunchAdd(adicionais)
-                            })
+                adicionais = ['Sem Adicional']
+                setLunchAdd(adicionais)
+                $('input:checkbox[name=add]:checked').each(function () {
+                  var chacked = parseFloat($(this).val())
+                  house.push(chacked)
+                  const index = adicionais.indexOf('Sem Adicional')
+                  if (index > -1) {
+                    adicionais.splice(index, 1)
+                  }
+                  adicionais.push($(this)[0].attributes[0].textContent)
+                  setLunchAdd(adicionais)
+                })
 
+                house.push(parseFloat($('input[name="size"]:checked').val()))
 
-                            house.push(parseFloat($('input[name="size"]:checked').val()))
+                return [
+                  (data.add = house.reduce((a, b) => a + b, 0)),
+                  (data.size_price = $('input[name="size"]:checked').val()),
+                  (data.first_meet = $(
+                    'input[name="option-one"]:checked'
+                  ).val()),
+                  (data.second_meet = $(
+                    'input[name="option-two"]:checked'
+                  ).val()),
 
-                            return [
-                                data.add = house.reduce((a, b) => a + b, 0),
-                                data.size_price = $('input[name="size"]:checked').val(),
-                                data.first_meet = $('input[name="option-one"]:checked').val(),
-                                data.second_meet = $('input[name="option-two"]:checked').val(),
+                  setLunchName($('#lunch').html()),
+                  setLunchSize(
+                    $('input[name="size"]:checked')[0].attributes[0].textContent
+                  ),
+                  setLunchMeet_One($('input[name="option-one"]:checked').val()),
+                  setLunchMeet_Two($('input[name="option-two"]:checked').val()),
+                  setLunchPrice(house.reduce((a, b) => a + b, 0)),
 
+                  dados.push({
+                    title: $('#lunch').html(),
+                    size: $('input[name="size"]:checked')[0].attributes[0]
+                      .textContent,
+                    meat_one: $('input[name="option-one"]:checked').val(),
+                    meat_two: $('input[name="option-two"]:checked').val(),
+                    add: adicionais,
+                    price: house.reduce((a, b) => a + b, 0),
+                  }),
+                ]
+              },
+            }).then(function (result) {
+              if (result.isConfirmed == true) {
+                itens.push(1)
 
-                                setLunchName($('#lunch').html()),
-                                setLunchSize($('input[name="size"]:checked')[0].attributes[0].textContent),
-                                setLunchMeet_One($('input[name="option-one"]:checked').val()),
-                                setLunchMeet_Two($('input[name="option-two"]:checked').val()),
-                                setLunchPrice(house.reduce((a, b) => a + b, 0)),
+                if (totalPrice == 0) {
+                  new_Total.push(parseFloat(result.value[0]))
+                  setTotalPrice(parseFloat(result.value[0]))
+                } else {
+                  new_Total.push(parseFloat(result.value[0]))
+                  setTotalPrice(new_Total.reduce(myFunc))
+                }
+              }
+            })
+          }}
+        >
+          <div className="info">
+            <div className="info_sup">
+              <div id="nameId" className="name">
+                Marmita Moda da Casa
+              </div>
+              <div className="desc">
+                Arroz, Feijão, Massa do dia, refogado, fritas, farofa, 2 carnes
+                a escolha e salada.
+              </div>
+            </div>
+            <div className="info_inf">
+              <fotter className="price">A partir de R$ 13,00</fotter>
+            </div>
+          </div>
+          <div className="image">
+            <img src="moda_casa.jpg"></img>
+          </div>
+        </div>
 
-                                dados.push({
-                                    title: $('#lunch').html(),
-                                    size: $('input[name="size"]:checked')[0].attributes[0].textContent,
-                                    meat_one: $('input[name="option-one"]:checked').val(),
-                                    meat_two: $('input[name="option-two"]:checked').val(),
-                                    add: adicionais,
-                                    price: house.reduce((a, b) => a + b, 0)
-                                }),
-                            ]
-                        }
-                    }).then(function (result) {
+        <div
+          className="container"
+          onClick={(e) => {
+            e.preventDefault()
 
-                        if (result.isConfirmed == true) {
-                            itens.push(1)
-
-                            if (totalPrice == 0) {
-                                new_Total.push(parseFloat(result.value[0]))
-                                setTotalPrice(parseFloat(result.value[0]))
-
-                            } else {
-                                new_Total.push(parseFloat(result.value[0]))
-                                setTotalPrice(new_Total.reduce(myFunc))
-                            }
-                        }
-                    })
-                }}>
-                    <div className="info">
-                        <div className="info_sup">
-                            <div id="nameId" className="name">Marmita Moda da Casa</div>
-                            <div className="desc">Arroz, Feijão, Massa do dia, refogado, fritas, farofa, 2 carnes a escolha e salada.</div>
-                        </div>
-                        <div className="info_inf">
-                            <fotter className="price">A partir de R$ 13,00</fotter>
-                        </div>
-                    </div>
-                    <div className="image">
-                        <img src="https://images.unsplash.com/photo-1600015835779-c6b36ddeac1f?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=675&q=80"></img>
-                    </div>
-                </div>
-
-
-
-                <div className="container" onClick={(e) => {
-                    e.preventDefault()
-
-
-                    Swal.fire({
-                        title: '<div id="modal_title"><h4>Detalhes</h4> <h5 id="lunch"> Marmita Econômica </h5> </div>',
-                        html:
-                            `
+            Swal.fire({
+              title:
+                '<div id="modal_title"><h4>Detalhes</h4> <h5 id="lunch"> Marmita Econômica </h5> </div>',
+              html: `
                         
                         
                         <section class="Swal-Container">
@@ -835,96 +866,105 @@ function Content() {
                             <hr></hr>
 
                             `,
-                        allowOutsideClick: true,
-                        showCloseButton: true,
-                        confirmButtonText: `Adicionar ao Carrinho`,
+              allowOutsideClick: true,
+              showCloseButton: true,
+              confirmButtonText: `Adicionar ao Carrinho`,
 
-                        preConfirm: () => {
-                            if ($('input[name="size"]:checked').val() == undefined || $('input[name="option-one"]:checked').val() == undefined) {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Oops...',
-                                    html: `<h5 id="error_msg"> Por Favor selecione todos os campos OBRIGATÓRIOS. </h5>`,
-                                })
-                                return false;
-                            }
-                            adicionais = ["Sem Adicional"]
-                            setLunchAdd(adicionais)
-                            $("input:checkbox[name=add]:checked").each(function () {
-                                var chacked = parseFloat($(this).val())
-                                house.push(chacked)
-                                const index = adicionais.indexOf("Sem Adicional");
-                                if (index > -1) {
-                                    adicionais.splice(index, 1);
-                                }
-                                adicionais.push($(this)[0].attributes[0].textContent)
-                                setLunchAdd(adicionais)
-                            })
-                            house.push(parseFloat($('input[name="size"]:checked').val()))
+              preConfirm: () => {
+                if (
+                  $('input[name="size"]:checked').val() == undefined ||
+                  $('input[name="option-one"]:checked').val() == undefined
+                ) {
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    html: `<h5 id="error_msg"> Por Favor selecione todos os campos OBRIGATÓRIOS. </h5>`,
+                  })
+                  return false
+                }
+                adicionais = ['Sem Adicional']
+                setLunchAdd(adicionais)
+                $('input:checkbox[name=add]:checked').each(function () {
+                  var chacked = parseFloat($(this).val())
+                  house.push(chacked)
+                  const index = adicionais.indexOf('Sem Adicional')
+                  if (index > -1) {
+                    adicionais.splice(index, 1)
+                  }
+                  adicionais.push($(this)[0].attributes[0].textContent)
+                  setLunchAdd(adicionais)
+                })
+                house.push(parseFloat($('input[name="size"]:checked').val()))
 
-                            return [
-                                data.add = house.reduce((a, b) => a + b, 0),
-                                data.size_price = $('input[name="size"]:checked').val(),
-                                data.first_meet = $('input[name="option-one"]:checked').val(),
-                                data.observation = $('#message').val(),
+                return [
+                  (data.add = house.reduce((a, b) => a + b, 0)),
+                  (data.size_price = $('input[name="size"]:checked').val()),
+                  (data.first_meet = $(
+                    'input[name="option-one"]:checked'
+                  ).val()),
+                  (data.observation = $('#message').val()),
 
+                  setLunchPrice(house.reduce((a, b) => a + b, 0)),
+                  setLunchName($('#lunch').html()),
+                  setLunchSize(
+                    $('input[name="size"]:checked')[0].attributes[0].textContent
+                  ),
+                  setLunchMeet_One($('input[name="option-one"]:checked').val()),
 
-                                setLunchPrice(house.reduce((a, b) => a + b, 0)),
-                                setLunchName($('#lunch').html()),
-                                setLunchSize($('input[name="size"]:checked')[0].attributes[0].textContent),
-                                setLunchMeet_One($('input[name="option-one"]:checked').val()),
+                  dados.push({
+                    title: $('#lunch').html(),
+                    size: $('input[name="size"]:checked')[0].attributes[0]
+                      .textContent,
+                    meat_one: $('input[name="option-one"]:checked').val(),
+                    meat_two: '',
+                    add: adicionais,
+                    price: house.reduce((a, b) => a + b, 0),
+                  }),
+                ]
+              },
+            }).then(function (result) {
+              if (result.isConfirmed == true) {
+                itens.push(1)
 
-                                dados.push({
-                                    title: $('#lunch').html(),
-                                    size: $('input[name="size"]:checked')[0].attributes[0].textContent,
-                                    meat_one: $('input[name="option-one"]:checked').val(),
-                                    meat_two: "",
-                                    add: adicionais,
-                                    price: house.reduce((a, b) => a + b, 0)
-                                }),
-                            ]
-                        }
-                    }).then(function (result) {
+                if (totalPrice == 0) {
+                  new_Total.push(parseFloat(result.value[0]))
+                  setTotalPrice(parseFloat(result.value[0]))
+                } else {
+                  new_Total.push(parseFloat(result.value[0]))
+                  setTotalPrice(new_Total.reduce(myFunc))
+                }
+              }
+            })
+          }}
+        >
+          <div className="info">
+            <div className="info_sup">
+              <div id="nameId" className="name">
+                Marmita Econômica
+              </div>
+              <div className="desc">
+                Arroz, Feijão, refogado, ovo, fritas, farofa, 1 carne a escolha
+                e salada.
+              </div>
+            </div>
+            <div className="info_inf">
+              <fotter className="price">A partir de R$ 11,00</fotter>
+            </div>
+          </div>
+          <div className="image">
+            <img src="economica.jpg"></img>
+          </div>
+        </div>
 
-                        if (result.isConfirmed == true) {
+        <div
+          className="container"
+          onClick={(e) => {
+            e.preventDefault()
 
-                            itens.push(1)
-
-
-                            if (totalPrice == 0) {
-                                new_Total.push(parseFloat(result.value[0]))
-                                setTotalPrice(parseFloat(result.value[0]))
-
-                            } else {
-                                new_Total.push(parseFloat(result.value[0]))
-                                setTotalPrice(new_Total.reduce(myFunc))
-                            }
-                        }
-                    })
-                }}>
-                    <div className="info">
-                        <div className="info_sup">
-                            <div id="nameId" className="name">Marmita Econômica</div>
-                            <div className="desc">Arroz, Feijão, refogado, ovo, fritas, farofa, 1 carne a escolha e salada.</div>
-                        </div>
-                        <div className="info_inf">
-                            <fotter className="price">A partir de R$ 11,00</fotter>
-                        </div>
-                    </div>
-                    <div className="image">
-                        <img src="https://images.unsplash.com/photo-1572269875715-391a71e6d188?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1296&q=80"></img>
-                    </div>
-                </div>
-
-
-                <div className="container" onClick={(e) => {
-                    e.preventDefault()
-
-
-                    Swal.fire({
-                        title: '<div id="modal_title"><h4>Detalhes</h4> <h5 id="lunch"> Marmita Chinesa </h5> </div>',
-                        html:
-                            `
+            Swal.fire({
+              title:
+                '<div id="modal_title"><h4>Detalhes</h4> <h5 id="lunch"> Marmita Chinesa </h5> </div>',
+              html: `
                         
                         
                         <section class="Swal-Container">
@@ -1044,93 +1084,96 @@ function Content() {
                             <hr></hr>
 
                             `,
-                        allowOutsideClick: true,
-                        showCloseButton: true,
-                        confirmButtonText: `Adicionar ao Carrinho`,
+              allowOutsideClick: true,
+              showCloseButton: true,
+              confirmButtonText: `Adicionar ao Carrinho`,
 
-                        preConfirm: () => {
-                            if ($('input[name="size"]:checked').val() == undefined) {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Oops...',
-                                    html: `<h5 id="error_msg"> Por Favor selecione todos os campos OBRIGATÓRIOS. </h5>`,
-                                })
-                                return false;
-                            }
-                            adicionais = ["Sem Adicional"]
-                            setLunchAdd(adicionais)
-                            $("input:checkbox[name=add]:checked").each(function () {
-                                var chacked = parseFloat($(this).val())
-                                house.push(chacked)
-                                const index = adicionais.indexOf("Sem Adicional");
-                                if (index > -1) {
-                                    adicionais.splice(index, 1);
-                                }
-                                adicionais.push($(this)[0].attributes[0].textContent)
-                                setLunchAdd(adicionais)
-                            })
-                            house.push(parseFloat($('input[name="size"]:checked').val()))
+              preConfirm: () => {
+                if ($('input[name="size"]:checked').val() == undefined) {
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    html: `<h5 id="error_msg"> Por Favor selecione todos os campos OBRIGATÓRIOS. </h5>`,
+                  })
+                  return false
+                }
+                adicionais = ['Sem Adicional']
+                setLunchAdd(adicionais)
+                $('input:checkbox[name=add]:checked').each(function () {
+                  var chacked = parseFloat($(this).val())
+                  house.push(chacked)
+                  const index = adicionais.indexOf('Sem Adicional')
+                  if (index > -1) {
+                    adicionais.splice(index, 1)
+                  }
+                  adicionais.push($(this)[0].attributes[0].textContent)
+                  setLunchAdd(adicionais)
+                })
+                house.push(parseFloat($('input[name="size"]:checked').val()))
 
-                            return [
-                                data.add = house.reduce((a, b) => a + b, 0),
-                                data.size_price = $('input[name="size"]:checked').val(),
-                                data.observation = $('#message').val(),
+                return [
+                  (data.add = house.reduce((a, b) => a + b, 0)),
+                  (data.size_price = $('input[name="size"]:checked').val()),
+                  (data.observation = $('#message').val()),
 
+                  setLunchPrice(house.reduce((a, b) => a + b, 0)),
+                  setLunchName($('#lunch').html()),
+                  setLunchSize(
+                    $('input[name="size"]:checked')[0].attributes[0].textContent
+                  ),
 
-                                setLunchPrice(house.reduce((a, b) => a + b, 0)),
-                                setLunchName($('#lunch').html()),
-                                setLunchSize($('input[name="size"]:checked')[0].attributes[0].textContent),
+                  dados.push({
+                    title: $('#lunch').html(),
+                    size: $('input[name="size"]:checked')[0].attributes[0]
+                      .textContent,
+                    meat_one: '',
+                    meat_two: '',
+                    add: adicionais,
+                    price: house.reduce((a, b) => a + b, 0),
+                  }),
+                ]
+              },
+            }).then(function (result) {
+              if (result.isConfirmed == true) {
+                itens.push(1)
 
-                                dados.push({
-                                    title: $('#lunch').html(),
-                                    size: $('input[name="size"]:checked')[0].attributes[0].textContent,
-                                    meat_one: "",
-                                    meat_two: "",
-                                    add: adicionais,
-                                    price: house.reduce((a, b) => a + b, 0)
-                                }),
-                            ]
-                        }
-                    }).then(function (result) {
+                if (totalPrice == 0) {
+                  new_Total.push(parseFloat(result.value[0]))
+                  setTotalPrice(parseFloat(result.value[0]))
+                } else {
+                  new_Total.push(parseFloat(result.value[0]))
+                  setTotalPrice(new_Total.reduce(myFunc))
+                }
+              }
+            })
+          }}
+        >
+          <div className="info">
+            <div className="info_sup">
+              <div className="name">Marmita Chinesa</div>
+              <div className="desc">
+                Arroz Chop Suey, Porquinho alho e óleo, Frango Xadrez e Salada
+                Chinesa (repolho).
+              </div>
+            </div>
+            <div className="info_inf">
+              <fotter className="price">A partir de R$ 13,00</fotter>
+            </div>
+          </div>
+          <div className="image">
+            <img src="chinesa.jpg"></img>
+          </div>
+        </div>
 
-                        if (result.isConfirmed == true) {
-                            itens.push(1)
+        <div
+          className="container"
+          onClick={(e) => {
+            e.preventDefault()
 
-
-                            if (totalPrice == 0) {
-                                new_Total.push(parseFloat(result.value[0]))
-                                setTotalPrice(parseFloat(result.value[0]))
-
-                            } else {
-                                new_Total.push(parseFloat(result.value[0]))
-                                setTotalPrice(new_Total.reduce(myFunc))
-                            }
-                        }
-                    })
-                }}>
-                    <div className="info">
-                        <div className="info_sup">
-                            <div className="name">Marmita Chinesa</div>
-                            <div className="desc">Arroz Chop Suey, Porquinho alho e óleo, Frango Xadrez e Salada Chinesa (repolho).</div>
-                        </div>
-                        <div className="info_inf">
-                            <fotter className="price">A partir de R$ 13,00</fotter>
-                        </div>
-                    </div>
-                    <div className="image">
-                        <img src="https://images.unsplash.com/photo-1512398975429-6ec18e1f3eb4?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=634&q=80"></img>
-                    </div>
-                </div>
-
-
-                <div className="container" onClick={(e) => {
-                    e.preventDefault()
-
-
-                    Swal.fire({
-                        title: '<div id="modal_title"><h4>Detalhes</h4> <h5 id="lunch"> Marmita Light </h5> </div>',
-                        html:
-                            `
+            Swal.fire({
+              title:
+                '<div id="modal_title"><h4>Detalhes</h4> <h5 id="lunch"> Marmita Light </h5> </div>',
+              html: `
                         
                         
                         <section class="Swal-Container">
@@ -1251,100 +1294,100 @@ function Content() {
 
 
                             `,
-                        allowOutsideClick: true,
-                        showCloseButton: true,
-                        confirmButtonText: `Adicionar ao Carrinho`,
+              allowOutsideClick: true,
+              showCloseButton: true,
+              confirmButtonText: `Adicionar ao Carrinho`,
 
-                        preConfirm: () => {
-                            if ($('input[name="size"]:checked').val() == undefined) {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Oops...',
-                                    html: `<h5 id="error_msg"> Por Favor selecione todos os campos OBRIGATÓRIOS. </h5>`,
-                                })
-                                return false;
-                            }
-                            adicionais = ["Sem Adicional"]
-                            setLunchAdd(adicionais)
-                            $("input:checkbox[name=add]:checked").each(function () {
-                                var chacked = parseFloat($(this).val())
-                                house.push(chacked)
-                                const index = adicionais.indexOf("Sem Adicional");
-                                if (index > -1) {
-                                    adicionais.splice(index, 1);
-                                }
-                                adicionais.push($(this)[0].attributes[0].textContent)
-                                setLunchAdd(adicionais)
-                            })
-                            house.push(parseFloat($('input[name="size"]:checked').val()))
+              preConfirm: () => {
+                if ($('input[name="size"]:checked').val() == undefined) {
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    html: `<h5 id="error_msg"> Por Favor selecione todos os campos OBRIGATÓRIOS. </h5>`,
+                  })
+                  return false
+                }
+                adicionais = ['Sem Adicional']
+                setLunchAdd(adicionais)
+                $('input:checkbox[name=add]:checked').each(function () {
+                  var chacked = parseFloat($(this).val())
+                  house.push(chacked)
+                  const index = adicionais.indexOf('Sem Adicional')
+                  if (index > -1) {
+                    adicionais.splice(index, 1)
+                  }
+                  adicionais.push($(this)[0].attributes[0].textContent)
+                  setLunchAdd(adicionais)
+                })
+                house.push(parseFloat($('input[name="size"]:checked').val()))
 
-                            return [
-                                data.add = house.reduce((a, b) => a + b, 0),
-                                data.size_price = $('input[name="size"]:checked').val(),
-                                data.observation = $('#message').val(),
+                return [
+                  (data.add = house.reduce((a, b) => a + b, 0)),
+                  (data.size_price = $('input[name="size"]:checked').val()),
+                  (data.observation = $('#message').val()),
 
+                  setLunchPrice(house.reduce((a, b) => a + b, 0)),
+                  setLunchName($('#lunch').html()),
+                  setLunchSize(
+                    $('input[name="size"]:checked')[0].attributes[0].textContent
+                  ),
 
-                                setLunchPrice(house.reduce((a, b) => a + b, 0)),
-                                setLunchName($('#lunch').html()),
-                                setLunchSize($('input[name="size"]:checked')[0].attributes[0].textContent),
+                  dados.push({
+                    title: $('#lunch').html(),
+                    size: $('input[name="size"]:checked')[0].attributes[0]
+                      .textContent,
+                    meat_one: '',
+                    meat_two: '',
+                    add: adicionais,
+                    price: house.reduce((a, b) => a + b, 0),
+                  }),
+                ]
+              },
+            }).then(function (result) {
+              if (result.isConfirmed == true) {
+                itens.push(1)
 
-                                dados.push({
-                                    title: $('#lunch').html(),
-                                    size: $('input[name="size"]:checked')[0].attributes[0].textContent,
-                                    meat_one: "",
-                                    meat_two: "",
-                                    add: adicionais,
-                                    price: house.reduce((a, b) => a + b, 0)
-                                }),
-                            ]
-                        }
-                    }).then(function (result) {
-
-                        if (result.isConfirmed == true) {
-                            itens.push(1)
-
-
-                            if (totalPrice == 0) {
-                                new_Total.push(parseFloat(result.value[0]))
-                                setTotalPrice(parseFloat(result.value[0]))
-
-                            } else {
-                                new_Total.push(parseFloat(result.value[0]))
-                                setTotalPrice(new_Total.reduce(myFunc))
-                            }
-                        }
-                    })
-                }}>
-                    <div className="info">
-                        <div className="info_sup">
-                            <div className="name">Marmita Light</div>
-                            <div className="desc">Arroz Integral, Feijão, Legumes, Filé de Frango Grelhado e Salada.</div>
-                        </div>
-                        <div className="info_inf">
-                            <fotter className="price">A partir de R$ 11,00</fotter>
-                        </div>
-                    </div>
-                    <div className="image">
-                        <img src="https://images.unsplash.com/photo-1599354607469-a5599a12e3b3?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1347&q=80"></img>
-                    </div>
-                </div>
-
-            </section>
-
-            <div className="title">
-                Feijoada (Quartas-feiras e Sábados)
+                if (totalPrice == 0) {
+                  new_Total.push(parseFloat(result.value[0]))
+                  setTotalPrice(parseFloat(result.value[0]))
+                } else {
+                  new_Total.push(parseFloat(result.value[0]))
+                  setTotalPrice(new_Total.reduce(myFunc))
+                }
+              }
+            })
+          }}
+        >
+          <div className="info">
+            <div className="info_sup">
+              <div className="name">Marmita Light</div>
+              <div className="desc">
+                Arroz Integral, Feijão, Legumes, Filé de Frango Grelhado e
+                Salada.
+              </div>
             </div>
+            <div className="info_inf">
+              <fotter className="price">A partir de R$ 11,00</fotter>
+            </div>
+          </div>
+          <div className="image">
+            <img src="light.jpg"></img>
+          </div>
+        </div>
+      </section>
 
-            <section className="card_container">
+      <div className="title">Feijoada (Quartas-feiras e Sábados)</div>
 
-                <div className="container" onClick={(e) => {
-                    e.preventDefault()
+      <section className="card_container" id="container_feijoada">
+        <div
+          className="container"
+          onClick={(e) => {
+            e.preventDefault()
 
-
-                    Swal.fire({
-                        title: '<div id="modal_title"><h4>Detalhes</h4> <h5 id="lunch"> Feijoada </h5> </div>',
-                        html:
-                            `
+            Swal.fire({
+              title:
+                '<div id="modal_title"><h4>Detalhes</h4> <h5 id="lunch"> Feijoada </h5> </div>',
+              html: `
                         
                         
                         <section class="Swal-Container">
@@ -1465,150 +1508,155 @@ function Content() {
 
 
                             `,
-                        allowOutsideClick: true,
-                        showCloseButton: true,
-                        confirmButtonText: `Adicionar ao Carrinho`,
+              allowOutsideClick: true,
+              showCloseButton: true,
+              confirmButtonText: `Adicionar ao Carrinho`,
 
-                        preConfirm: () => {
-                            if ($('input[name="size"]:checked').val() == undefined) {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Oops...',
-                                    html: `<h5 id="error_msg"> Por Favor selecione todos os campos OBRIGATÓRIOS. </h5>`,
-                                })
-                                return false;
-                            }
-                            adicionais = ["Sem Adicional"]
-                            setLunchAdd(adicionais)
-                            $("input:checkbox[name=add]:checked").each(function () {
-                                var chacked = parseFloat($(this).val())
-                                house.push(chacked)
-                                const index = adicionais.indexOf("Sem Adicional");
-                                if (index > -1) {
-                                    adicionais.splice(index, 1);
-                                }
-                                adicionais.push($(this)[0].attributes[0].textContent)
-                                setLunchAdd(adicionais)
-                            })
-                            house.push(parseFloat($('input[name="size"]:checked').val()))
-
-                            return [
-                                data.add = house.reduce((a, b) => a + b, 0),
-                                data.size_price = $('input[name="size"]:checked').val(),
-                                data.observation = $('#message').val(),
-
-
-                                setLunchPrice(house.reduce((a, b) => a + b, 0)),
-                                setLunchName($('#lunch').html()),
-                                setLunchSize($('input[name="size"]:checked')[0].attributes[0].textContent),
-
-                                dados.push({
-                                    title: $('#lunch').html(),
-                                    size: $('input[name="size"]:checked')[0].attributes[0].textContent,
-                                    meat_one: "",
-                                    meat_two: "",
-                                    add: adicionais,
-                                    price: house.reduce((a, b) => a + b, 0)
-                                }),
-                            ]
-                        }
-                    }).then(function (result) {
-
-                        if (result.isConfirmed == true) {
-                            itens.push(1)
-
-
-                            if (totalPrice == 0) {
-                                new_Total.push(parseFloat(result.value[0]))
-                                setTotalPrice(parseFloat(result.value[0]))
-
-                            } else {
-                                new_Total.push(parseFloat(result.value[0]))
-                                setTotalPrice(new_Total.reduce(myFunc))
-                            }
-                        }
-                    })
-                }}>
-                    <div className="info">
-                        <div className="info_sup">
-                            <div className="name"><p>Feijoada</p></div>
-                            <div className="desc">Arroz, feijoada, farofa, couve, bisteca suína, torresmo, vinagrete e laranja.</div>
-                        </div>
-                        <div className="info_inf">
-                            <fotter className="price">A partir de R$ 13,00</fotter>
-                        </div>
-                    </div>
-                    <div className="image">
-                        <img src="https://img.itdg.com.br/images/recipes/000/002/998/324387/324387_original.jpg"></img>
-                    </div>
-                </div>
-            </section>
-
-
-            <div className="fotter" onClick={(e) => {
-                e.preventDefault()
-                if (totalPrice == 0) {
-                    Swal.fire({
-                        icon: 'info',
-                        title: 'Carrinho vazio'
-                    })
-                } else {
-
-                    Swal.fire({
-
-                        title: '<div id="modal_title"><h4>Carrinho</h4> </div>',
-                        html: '<hr /> ' +
-                            '<section class="Swal-Container" id="final_container">' +
-                            '<div class="jorginho" id="msg_size">Items </div> </section>'
-                            + order +
-                            '<div class="jorginho" id="msg_size">Observações </div>' +
-                            ' </section>' +
-                            '<hr />' +
-                            '<div id="obs_fotter">' +
-                            '<textarea id="message" class="textarea"></textarea>' +
-                            '</div>' +
-                            '<hr />' +
-                            '<section class="Swal-Container" id="final_container">' +
-                            ' <div class="jorginho" id="msg_size">Total </div>' +
-                            '<div class="jorginho" id="total" >R$' + totalPrice + '</div>' +
-                            ' </section>' +
-                            '<hr />',
-
-                        focusConfirm: false,
-                        showCancelButton: true,
-                        cancelButtonText: 'Limpar Carrinho',
-                        preConfirm: () => {
-
-                            return [
-                            ]
-                        }
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                        } else if (
-                            setDados([]),
-                            setTotalPrice(0),
-                            setItens([0])
-                        ) {
-                            Swal.fire.fire(
-                                'Carrinho Limpo',
-                                'success'
-                            )
-                        }
-                    })
+              preConfirm: () => {
+                if ($('input[name="size"]:checked').val() == undefined) {
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    html: `<h5 id="error_msg"> Por Favor selecione todos os campos OBRIGATÓRIOS. </h5>`,
+                  })
+                  return false
                 }
+                adicionais = ['Sem Adicional']
+                setLunchAdd(adicionais)
+                $('input:checkbox[name=add]:checked').each(function () {
+                  var chacked = parseFloat($(this).val())
+                  house.push(chacked)
+                  const index = adicionais.indexOf('Sem Adicional')
+                  if (index > -1) {
+                    adicionais.splice(index, 1)
+                  }
+                  adicionais.push($(this)[0].attributes[0].textContent)
+                  setLunchAdd(adicionais)
+                })
+                house.push(parseFloat($('input[name="size"]:checked').val()))
 
-            }}>
+                return [
+                  (data.add = house.reduce((a, b) => a + b, 0)),
+                  (data.size_price = $('input[name="size"]:checked').val()),
+                  (data.observation = $('#message').val()),
 
-                <div>
-                    <p id="amount">{itens.reduce(myFunc)}</p>
-                    <h5>Carrinho</h5>
-                    <p id="aloha" value={totalPrice}>R$ {totalPrice}</p>
-                </div>
+                  setLunchPrice(house.reduce((a, b) => a + b, 0)),
+                  setLunchName($('#lunch').html()),
+                  setLunchSize(
+                    $('input[name="size"]:checked')[0].attributes[0].textContent
+                  ),
+
+                  dados.push({
+                    title: $('#lunch').html(),
+                    size: $('input[name="size"]:checked')[0].attributes[0]
+                      .textContent,
+                    meat_one: '',
+                    meat_two: '',
+                    add: adicionais,
+                    price: house.reduce((a, b) => a + b, 0),
+                  }),
+                ]
+              },
+            }).then(function (result) {
+              if (result.isConfirmed == true) {
+                itens.push(1)
+
+                if (totalPrice == 0) {
+                  new_Total.push(parseFloat(result.value[0]))
+                  setTotalPrice(parseFloat(result.value[0]))
+                } else {
+                  new_Total.push(parseFloat(result.value[0]))
+                  setTotalPrice(new_Total.reduce(myFunc))
+                }
+              }
+            })
+          }}
+        >
+          <div className="info">
+            <div className="info_sup">
+              <div className="name">
+                <p>Feijoada</p>
+              </div>
+              <div className="desc">
+                Arroz, feijoada, farofa, couve, bisteca suína, torresmo,
+                vinagrete e laranja.
+              </div>
             </div>
+            <div className="info_inf">
+              <fotter className="price">A partir de R$ 13,00</fotter>
+            </div>
+          </div>
+          <div className="image">
+            <img src="feijoada.jpg"></img>
+          </div>
+        </div>
+      </section>
 
-        </div >
-    );
+      <div
+        className="fotter"
+        onClick={(e) => {
+          e.preventDefault()
+          if (totalPrice == 0) {
+            Swal.fire({
+              icon: 'info',
+              title: 'Carrinho vazio',
+            })
+          } else {
+            const swalWithBootstrapButtons = Swal.mixin({
+              customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-danger',
+              },
+              buttonsStyling: false,
+            })
 
+            Swal.fire({
+              title: '<div id="modal_title"><h4>Carrinho</h4> </div>',
+              html:
+                '<hr /> ' +
+                '<section class="Swal-Container" id="final_container">' +
+                '<div class="jorginho" id="msg_size">Items </div> </section>' +
+                order +
+                '<div class="jorginho" id="msg_size">Observações </div>' +
+                ' </section>' +
+                '<hr />' +
+                '<div id="obs_fotter">' +
+                '<textarea id="message" class="textarea"></textarea>' +
+                '</div>' +
+                '<hr />' +
+                '<section class="Swal-Container" id="final_container">' +
+                ' <div class="jorginho" id="msg_size">Total </div>' +
+                '<div class="jorginho" id="total" >R$' +
+                totalPrice +
+                '</div>' +
+                ' </section>' +
+                '<hr />',
+              showCancelButton: true,
+              confirmButtonText: 'Fazer Pedido',
+              cancelButtonText: 'Limpar Carrinho',
+            }).then((result) => {
+              if (result.isConfirmed) {
+                Swal.fire('Pedido Realizado Com Sucesso !', '', 'success')
+              } else if (result.dismiss === Swal.DismissReason.cancel) {
+                clearPrice()
+                clearDados()
+                clearItens()
+                Swal.fire('Carrinho Limpo !', '', 'success')
+              }
+            })
+          }
+        }}
+      >
+        <div>
+          <p id="amount">{itens.reduce(myFunc)}</p>
+          <h5>Carrinho</h5>
+          <p id="aloha" value={totalPrice}>
+            R$ {totalPrice}
+          </p>
+        </div>
+      </div>
+    </div>
+  )
 }
 
-export default Content;
+export default Content
