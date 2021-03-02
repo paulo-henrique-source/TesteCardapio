@@ -9,7 +9,7 @@
     "rewrites": [
       {
         "source": "**",
-        "destination": "https://cors-anywhere.herokuapp.com/index.html"
+        "destination": "index.html"
       }
     ]
   }
